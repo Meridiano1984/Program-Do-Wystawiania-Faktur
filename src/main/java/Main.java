@@ -7,6 +7,8 @@ public class Main {
 
     public static void  main(String[] args){
 
+        //KOMENDY DO INICJALIZACJI BAZY DANYCH MYSQL
+
 
         // DODANIE PARU PRODUKTOW
         LinkedList<Produkt> listaProduktow = new LinkedList<>();
