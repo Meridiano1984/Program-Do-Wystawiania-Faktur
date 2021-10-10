@@ -28,4 +28,27 @@ public class QueryExecutor {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
+    private void tworzenieBazydanych (){
+
+        String Query = """
+                CREATE TABLE faktury (\s
+                 faktura INT PRIMARY KEY,
+                 kontrachent VARCHAR(100),
+                 cenaBrutto VARCHAR(40),
+                 );
+                        """;
+
+
+
+        try{
+            Connection connection =DbConnector.connect();
+            Statement statement = connection.createStatement();
+            statement.execute(Query);
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

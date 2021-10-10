@@ -12,6 +12,7 @@ public class Menu {
         System.out.println("1.Wyswietl wszystkie faktury");
         System.out.println("2.Dodaj nowa Fakture");
         System.out.println("3.Wyswietl konkretna fakture");
+        System.out.println("Twój wybór: ");
 
         Scanner scanner = new Scanner(System.in);
         int liczbaSterujaca =scanner.nextInt();

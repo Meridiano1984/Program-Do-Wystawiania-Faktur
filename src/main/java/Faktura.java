@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -7,17 +8,25 @@ public class Faktura {
 
     private static int liczbaFaktur=0;
 
-    private Date        dataWystawienia;
-    private String      nabywca;
+    private LocalDate dataWystawienia;
+    private Kontrachent kontrachent;
     private double      cenaBrutto;
     private LinkedList<Produkt> produkty = new LinkedList<>();
 
 
-    public Faktura(Date dataWystawienia, String nabywca) {
+    public Faktura(LocalDate dataWystawienia, Kontrachent kontrachent) {
         this.dataWystawienia = dataWystawienia;
         this.cenaBrutto =0;
-        this.nabywca = nabywca;
+        this.kontrachent = kontrachent;
         liczbaFaktur++;
+    }
+
+    public Kontrachent getKontrachent() {
+        return kontrachent;
+    }
+
+    public void setKontrachent(Kontrachent kontrachent) {
+        this.kontrachent = kontrachent;
     }
 
     public static int getLiczbaFaktur() {
@@ -28,21 +37,14 @@ public class Faktura {
         Faktura.liczbaFaktur = liczbaFaktur;
     }
 
-    public Date getDataWystawienia() {
+    public LocalDate getDataWystawienia() {
         return dataWystawienia;
     }
 
-    public void setDataWystawienia(Date dataWystawienia) {
+    public void setDataWystawienia(LocalDate dataWystawienia) {
         this.dataWystawienia = dataWystawienia;
     }
 
-    public String getNabywca() {
-        return nabywca;
-    }
-
-    public void setNabywca(String nabywca) {
-        this.nabywca = nabywca;
-    }
 
     public double getCenaBrutto() {
         return cenaBrutto;
@@ -65,7 +67,7 @@ public class Faktura {
 
             System.out.println("Faktura nr:" + listaFaktur.indexOf(faktura));
             System.out.println("Data wystawienia: " + faktura.getDataWystawienia());
-            System.out.println("Nabywca: " + faktura.getNabywca());
+            System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
             System.out.println("CenaBrutto: " + faktura.getCenaBrutto());
             System.out.println();
 
@@ -96,7 +98,7 @@ public class Faktura {
 
         System.out.println("Faktura nr: " + nrFaktury);
         System.out.println("Data wystawienia :" + faktura.getDataWystawienia());
-        System.out.println("Nabywca: " + faktura.getNabywca());
+        System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
         System.out.println();
         System.out.println("PRODUKTY");
         int nrProduktu = 1;
@@ -119,22 +121,26 @@ public class Faktura {
 
         System.out.println("        Dodawanie nowej faktury");
         System.out.println("1.Data wystawienia ");
-        System.out.print("    Rok:");
+        System.out.print("      Rok:");
         int rok = scanner.nextInt();
-        System.out.print("    Miesiąc:");
+        System.out.print("      Miesiąc:");
         int miesiac = scanner.nextInt();
-        System.out.print("    Dzien:");
+        System.out.print("      Dzien:");
         int dzien = scanner.nextInt();
 
-        Date dataWystawienia = new Date();
-        dataWystawienia.setYear(rok);
-        dataWystawienia.setMonth(miesiac-1);
-        dataWystawienia.setDate(dzien-1);
+        LocalDate dataWystawiania = LocalDate.of(rok,miesiac,dzien);
 
-        System.out.print("2.Nabywca: ");
-        String nabywca = scanner.next();
+        Kontrachent kontrachent;
 
-        Faktura faktura = new Faktura(dataWystawienia,nabywca);
+        System.out.println("2.Dane Kontrachenta ");
+        System.out.print("      Nazwa Kontrachenta: ");
+        String nazwaKontrachenta = scanner.next();
+        System.out.print("      NIP: ");
+        int nip = scanner.nextInt();
+
+        kontrachent = new Kontrachent(nazwaKontrachenta,nip);
+
+        Faktura faktura = new Faktura(dataWystawiania,kontrachent);
         listaFaktur.add(faktura);
 
         Faktura.dodawainieProduktowDoNowejFaktury(faktura);
@@ -148,7 +154,7 @@ public class Faktura {
 
     public static void dodawainieProduktowDoNowejFaktury(Faktura faktura){
         System.out.println("                                                    Dodawanie Produktów");
-        System.out.println("Faktura nr: " + liczbaFaktur + " Wystawiona: " + faktura.getDataWystawienia() + " nabywca: " + faktura.getNabywca());
+        System.out.println("Faktura nr: " + liczbaFaktur + " Wystawiona: " + faktura.getDataWystawienia() + " nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
 
         System.out.println();
 

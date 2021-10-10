@@ -1,6 +1,10 @@
 import com.sun.jdi.connect.spi.TransportService;
 
+import javax.swing.*;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.Date;
 
 public class Main {
 
@@ -8,6 +12,16 @@ public class Main {
     public static void  main(String[] args){
 
         //KOMENDY DO INICJALIZACJI BAZY DANYCH MYSQL
+        //TODO dodac inicjalizacje schema w MYSQL a nie robic to recznie
+
+
+
+        // DODANIE PARU KONTRACHENTOW
+
+        LinkedList<Kontrachent> listaKontrachentow = new LinkedList<>();
+        listaKontrachentow.add(new Kontrachent("MIRBUDEX",1234567890));
+        listaKontrachentow.add(new Kontrachent("Biedronka", 334512967));
+        listaKontrachentow.add(new Kontrachent("Oracle", 815462967));
 
 
         // DODANIE PARU PRODUKTOW
@@ -18,13 +32,13 @@ public class Main {
 
         //DODANIE 10 NOWYCH FAKTUR
         int liczbaFakturDoWprowadzenia = 10;
-        Date    dataWystawienia = new Date(2021,8,11);
+        LocalDate dataWystawienia = LocalDate.of(2021,8,11);
         String  nabywca =  new String("Mirbux");
         int     cenaBrutto = 0;
 
         ArrayList<Faktura> listaFaktur = new ArrayList<>(liczbaFakturDoWprowadzenia);
         for(int i  =0; i< liczbaFakturDoWprowadzenia; i++) {
-            listaFaktur.add(new Faktura(dataWystawienia, nabywca));
+            listaFaktur.add(new Faktura(dataWystawienia, listaKontrachentow.get(1)));
         }
 
 
