@@ -1,3 +1,4 @@
+import DataBase.DatabaseInitialization;
 import com.sun.jdi.connect.spi.TransportService;
 
 import javax.swing.*;
@@ -14,6 +15,9 @@ public class Main {
         //KOMENDY DO INICJALIZACJI BAZY DANYCH MYSQL
         //TODO dodac inicjalizacje schema w MYSQL a nie robic to recznie
 
+        DatabaseInitialization databaseInitialization = new DatabaseInitialization();
+        databaseInitialization.tworzenieBazydanych();
+        databaseInitialization.dodaniePrzykładowychdanych();
 
 
         // DODANIE PARU KONTRACHENTOW

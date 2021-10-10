@@ -34,21 +34,43 @@ public class QueryExecutor {
 
         String Query = """
                 CREATE TABLE faktury (\s
-                 faktura INT PRIMARY KEY,
-                 kontrachent VARCHAR(100),
-                 cenaBrutto VARCHAR(40),
+                 faktura_id INT PRIMARY KEY,
+                 cenaBrutto INT,
                  );
                         """;
 
+        executeQuery(Query);
 
+        Query = """
+                 CREATE TABLE kontrachenci (\s
+                 kontrachent_id INT PRIMARY KEY,
+                 kontrachent_name VARCHAR(40),
+                 nip INT,
+                 );
+                """;
 
-        try{
-            Connection connection =DbConnector.connect();
-            Statement statement = connection.createStatement();
-            statement.execute(Query);
+        executeQuery(Query);
 
-        } catch (SQLException e){
-            throw new RuntimeException(e.getMessage());
-        }
+        Query = """ 
+                 CREATE TABLE produkty ( 
+                 produkt_id INT PRIMARY KEY,
+                 produkt_name VARCHAR(40),
+                 cena_brutto FLOAT(2),
+                 );
+                """;
+
+        executeQuery(Query);
+
+        Query = """
+                CREATE TABLE wystawione_faktury ( 
+                 faktura_id INT,
+                 kontrachent_id INT,
+                 produkt_id INT,
+                 PRIMARY KEY(faktura_id, kontrachent_id),
+                 FOREIGN KEY(faktura_id) REFERENCES faktury(faktura_id) ON DELETE CASCADE,
+                 FOREIGN KEY(kontrachent_id) REFERENCES kontrachenci(kontrachent_id) ON DELETE CASCADE
+                 );
+                """;
+
     }
 }
