@@ -54,21 +54,23 @@ public class DatabaseInitialization {
             System.out.println("Tabela produkty juz istnieje");
         }
 
-        try {
+
+        //TODO ZAPROJEKTOWAC BAZEDANYCH TAK ZE KAZDA FAKTURA MA JEDNEGO KONTRACHENTA (faktura i kontrachent ot primary key) I WIELE PRODUKTOW COS JAKBY TABLICA PRODUKTOW
+
+
             Query = """
                     CREATE TABLE wystawione_faktury ( 
                      faktura_id INT,
                      kontrachent_id INT,
                      produkt_id INT,
-                     PRIMARY KEY(faktura_id, kontrachent_id),
-                     FOREIGN KEY(faktura_id) REFERENCES faktury(faktura_id) ON DELETE CASCADE,
-                     FOREIGN KEY(kontrachent_id) REFERENCES kontrachenci(kontrachent_id) ON DELETE CASCADE
+                     PRIMARY KEY(faktura_id, produkt_id),
+                     FOREIGN KEY(faktura_id) REFERENCES faktury(faktura_id) ON DELETE CASCADE ON UPDATE CASCADE,
+                     FOREIGN KEY(kontrachent_id) REFERENCES kontrachenci(kontrachent_id) ON DELETE CASCADE ON UPDATE CASCADE,
+                     FOREIGN KEY(produkt_id) REFERENCES produkty(produkt_id) ON DELETE CASCADE ON UPDATE CASCADE
                      );
                     """;
             executeQuery(Query);
-        }catch (RuntimeException e){
-            System.out.println("Tabela wystawione_faktury juz istnieje");
-        }
+
 
     }
 
@@ -99,25 +101,35 @@ public class DatabaseInitialization {
 
 
 
-            executeQuery("INSERT INTO faktury VALUES(1,0);");
-            executeQuery("INSERT INTO faktury VALUES(2,0);");
+            executeQuery("INSERT INTO faktury VALUES(1,'2021-12-23',0);");
+            executeQuery("INSERT INTO faktury VALUES(2,'2022-01-01',0);");
 
 
             System.out.println("Dodano faktury");
 
 
 
-            executeQuery("INSERT INTO wystawione_faktury (1,1,1);");
-            executeQuery("INSERT INTO wystawione_faktury (1,1,1);");
-            executeQuery("INSERT INTO wystawione_faktury (1,1,5);");
-            executeQuery("INSERT INTO wystawione_faktury (1,1,5);");
-            executeQuery("INSERT INTO wystawione_faktury (2,3,2);");
-            executeQuery("INSERT INTO wystawione_faktury (2,3,2);");
-            executeQuery("INSERT INTO wystawione_faktury (2,3,2);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,1);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,2);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,5);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,3);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,4);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,1);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,2);");
 
             System.out.println("Dodano wystawione Faktury");
 
 
     }
 
+
+    public void usuwanieTabel(){
+
+
+            executeQuery("DROP TABLE wystawione_faktury;");
+            executeQuery("DROP TABLE produkty;");
+            executeQuery("DROP TABLE kontrachenci;");
+            executeQuery("DROP TABLE faktury;");
+
+    }
 }

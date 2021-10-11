@@ -15,9 +15,16 @@ public class Main {
         //KOMENDY DO INICJALIZACJI BAZY DANYCH MYSQL
         //TODO dodac inicjalizacje schema w MYSQL a nie robic to recznie
 
+
+
         DatabaseInitialization databaseInitialization = new DatabaseInitialization();
+
+        //KOMENDA DO USOWANIA POPRZEDNIEJ BAZY DANYCH
+        databaseInitialization.usuwanieTabel();
+
         databaseInitialization.tworzenieBazydanych();
         databaseInitialization.dodaniePrzykładowychdanych();
+
 
 
         // DODANIE PARU KONTRACHENTOW

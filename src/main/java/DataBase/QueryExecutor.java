@@ -35,6 +35,7 @@ public class QueryExecutor {
         String Query = """
                 CREATE TABLE faktury (\s
                  faktura_id INT PRIMARY KEY,
+                 dataWystawienia DATE,
                  cenaBrutto INT,
                  );
                         """;
