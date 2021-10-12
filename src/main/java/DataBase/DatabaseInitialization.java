@@ -14,7 +14,8 @@ public class DatabaseInitialization {
         try {
              Query = """
                     CREATE TABLE faktury (\s
-                     faktura_id INT PRIMARY KEY,
+                     faktura_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                     nr_faktury VARCHAR(15),
                      data_wystawienia DATE,
                      cenaBrutto FLOAT(2)
                      );
@@ -29,7 +30,7 @@ public class DatabaseInitialization {
         try {
             Query = """
                      CREATE TABLE kontrachenci (\s
-                     kontrachent_id INT PRIMARY KEY,
+                     kontrachent_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                      kontrachent_name VARCHAR(40),
                      nip VARCHAR(15)
                      );
@@ -43,7 +44,7 @@ public class DatabaseInitialization {
         try {
             Query = """ 
                      CREATE TABLE produkty ( 
-                     produkt_id INT PRIMARY KEY,
+                     produkt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                      produkt_name VARCHAR(40),
                      cena_brutto FLOAT(2)
                      );
@@ -102,8 +103,8 @@ public class DatabaseInitialization {
 
 
 
-            executeQuery("INSERT INTO faktury VALUES(1,'2021-12-23',0);");
-            executeQuery("INSERT INTO faktury VALUES(2,'2022-01-01',0);");
+            executeQuery("INSERT INTO faktury VALUES(1,'1/10/2021','2021-12-23',0);");
+            executeQuery("INSERT INTO faktury VALUES(2,'2/10/2021','2022-01-01',0);");
 
 
             System.out.println("Dodano faktury");

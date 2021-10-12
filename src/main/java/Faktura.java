@@ -18,6 +18,7 @@ public class Faktura {
     public Faktura(LocalDate dataWystawienia, Kontrachent kontrachent) {
         this.dataWystawienia = dataWystawienia;
         this.cenaBrutto =0;
+        this.nrFaktury = nadawanieNumeruFakturyWKonstruktorze();
         this.kontrachent = kontrachent;
         liczbaFaktur++;
     }
@@ -76,7 +77,7 @@ public class Faktura {
 
             System.out.println("Faktura nr:" + listaFaktur.indexOf(faktura));
             System.out.println("Data wystawienia: " + faktura.getDataWystawienia());
-            System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
+            System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP() + " nr Faktury: " + faktura.getNrFaktury());
             System.out.println("CenaBrutto: " + faktura.getCenaBrutto());
             System.out.println();
 
@@ -201,6 +202,57 @@ public class Faktura {
         } while(warunek);
 
         faktura.setProdukty(produkty);
+    }
+
+    private String nadawanieNumeruFakturyWKonstruktorze(){
+
+        String nowyNrFaktury;
+
+        LocalDate dzisiejszaData = LocalDate.now();
+
+        nowyNrFaktury = ("nr faktury: " + getLiczbaFaktur() + "/" + dzisiejszaData.getMonthValue() + "/" + dzisiejszaData.getYear() );
+
+        return nowyNrFaktury;
+    }
+
+    public static void dodawnaieNowejFakturyv2(){
+
+        //POBIERANIE DATY
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("        Dodawanie nowej faktury");
+        System.out.println("1.Data wystawienia ");
+        System.out.print("      Rok:");
+        int rok = scanner.nextInt();
+        System.out.print("      Miesiąc:");
+        int miesiac = scanner.nextInt();
+        System.out.print("      Dzien:");
+        int dzien = scanner.nextInt();
+
+        LocalDate dataWystawiania = LocalDate.of(rok,miesiac,dzien);
+
+        //WYBRANIE/DODANIE KONTRACHENTA
+
+        System.out.println("\n\n1.Wyswietl wszystkich kontrachentow\n2.Dodaj nowego");
+
+        int wybor = scanner.nextInt();
+
+        switch (wybor){
+            case 1:
+                Kontrachent.wyswietlanieWszystkichKontrachentow();
+                break;
+            case 2:
+                Kontrachent.dodanieNowegoKontrachenta();
+                break;
+
+        }
+
+//        boolean warunek = false;
+//
+//        do{
+//
+//        }while(warunek);
+
     }
 
 }
