@@ -1,3 +1,7 @@
+import DataBase.QueryExecutor;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +88,7 @@ public class Faktura {
             int nrProduktu = 1;
             System.out.println("PRODUKTY");
             for (Produkt produkt: faktura.getProdukty()){
-                System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuNetto());
+                System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
                 nrProduktu++;
             }
 
@@ -114,7 +118,7 @@ public class Faktura {
         int nrProduktu = 1;
 
         for (Produkt produkt: faktura.getProdukty()){
-            System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuNetto());
+            System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
             nrProduktu++;
         }
 
@@ -146,7 +150,7 @@ public class Faktura {
         System.out.print("      Nazwa Kontrachenta: ");
         String nazwaKontrachenta = scanner.next();
         System.out.print("      NIP: ");
-        int nip = scanner.nextInt();
+        String nip = scanner.next();
 
         kontrachent = new Kontrachent(nazwaKontrachenta,nip);
 
@@ -231,21 +235,37 @@ public class Faktura {
 
         LocalDate dataWystawiania = LocalDate.of(rok,miesiac,dzien);
 
+
+
         //WYBRANIE/DODANIE KONTRACHENTA
 
         System.out.println("\n\n1.Wyswietl wszystkich kontrachentow\n2.Dodaj nowego");
 
         int wybor = scanner.nextInt();
+        Kontrachent kontrachent =null;
 
         switch (wybor){
             case 1:
                 Kontrachent.wyswietlanieWszystkichKontrachentow();
+                System.out.print("Podaj numer kontrachenta ktorego chcesz dodac:");
+                int wyborKontrachenta = scanner.nextInt();
+                kontrachent = Kontrachent.getKontrachentPoZadanymIndex(wyborKontrachenta);
                 break;
             case 2:
-                Kontrachent.dodanieNowegoKontrachenta();
+                kontrachent =Kontrachent.dodanieNowegoKontrachenta();
                 break;
 
         }
+
+        //TODO ZMIENIC ARCHITEKTURE BAZYDANYCH GDZIE FAKTURA-KONTRACHENT 1:1 A PRDUKTY TO IDK (TABICA/WIELE DO WIELU) BO TUTAJ DODOAJEMY DO FKATURY KONTRACHENTA A W BAZIE DANYCH TAK NIE MA
+
+        Faktura faktura = new Faktura(dataWystawiania,kontrachent);
+
+        Produkt.dodawanieProduktowDoFakturyv2(faktura);
+
+
+
+
 
 //        boolean warunek = false;
 //
@@ -253,6 +273,25 @@ public class Faktura {
 //
 //        }while(warunek);
 
+    }
+
+    public static Faktura getFakturaPoZadanymIndex(int index){
+
+        Faktura kontrachent =null;
+        try {
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE faktura_id="+ index +";");
+            result.next();
+
+            String kontrachent_name = result.getString("kontrachent_name")           ;
+            String nip = result.getString("nip");
+
+            kontrachent = new Kontrachent(kontrachent_name,nip);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return kontrachent ;
     }
 
 }

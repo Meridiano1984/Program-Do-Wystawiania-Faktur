@@ -8,9 +8,9 @@ public class Kontrachent {
 
     static  private int liczbaKontrachentow=0;
     private String nazwaKontrachenta;
-    private int NIP;
+    private String NIP;
 
-    public Kontrachent(String nazwaKontrachenta, int NIP) {
+    public Kontrachent(String nazwaKontrachenta, String NIP) {
         this.nazwaKontrachenta = nazwaKontrachenta;
         this.NIP = NIP;
         liczbaKontrachentow++;
@@ -33,12 +33,31 @@ public class Kontrachent {
         this.nazwaKontrachenta = nazwaKontrachenta;
     }
 
-    public int getNIP() {
+    public String getNIP() {
         return NIP;
     }
 
-    public void setNIP(int NIP) {
+    public void setNIP(String NIP) {
         this.NIP = NIP;
+    }
+
+    public static Kontrachent getKontrachentPoZadanymIndex(int index){
+
+        Kontrachent kontrachent =null;
+        try {
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_id="+ index +";");
+            result.next();
+
+            String kontrachent_name = result.getString("kontrachent_name")           ;
+            String nip = result.getString("nip");
+
+            kontrachent = new Kontrachent(kontrachent_name,nip);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return kontrachent ;
     }
 
     public static void wyswietlanieWszystkichKontrachentow(){
@@ -66,7 +85,7 @@ public class Kontrachent {
         }
     }
 
-    public static void dodanieNowegoKontrachenta(){
+    public static Kontrachent dodanieNowegoKontrachenta(){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -74,13 +93,13 @@ public class Kontrachent {
         System.out.print("      Nazwa Kontrachenta: ");
         String nazwaKontrachenta = scanner.next();
         System.out.print("      NIP: ");
-        int nip = scanner.nextInt();
+        String nip = scanner.next();
 
         Kontrachent kontrachent = new Kontrachent(nazwaKontrachenta,nip);
         kontrachent.dodanieKontrachentaDoBazyDanych(kontrachent);
 
 
-
+        return  kontrachent;
     }
 
 

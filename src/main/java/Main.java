@@ -30,9 +30,9 @@ public class Main {
         // DODANIE PARU KONTRACHENTOW
 
         LinkedList<Kontrachent> listaKontrachentow = new LinkedList<>();
-        listaKontrachentow.add(new Kontrachent("MIRBUDEX",1234567890));
-        listaKontrachentow.add(new Kontrachent("Biedronka", 334512967));
-        listaKontrachentow.add(new Kontrachent("Oracle", 815462967));
+        listaKontrachentow.add(new Kontrachent("MIRBUDEX","1234567890"));
+        listaKontrachentow.add(new Kontrachent("Biedronka", "334512967"));
+        listaKontrachentow.add(new Kontrachent("Oracle", "815462967"));
 
 
         // DODANIE PARU PRODUKTOW
