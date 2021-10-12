@@ -8,8 +8,9 @@ public class Faktura {
 
     private static int liczbaFaktur=0;
 
-    private LocalDate dataWystawienia;
+    private LocalDate   dataWystawienia;
     private Kontrachent kontrachent;
+    private String      nrFaktury;
     private double      cenaBrutto;
     private LinkedList<Produkt> produkty = new LinkedList<>();
 
@@ -19,6 +20,14 @@ public class Faktura {
         this.cenaBrutto =0;
         this.kontrachent = kontrachent;
         liczbaFaktur++;
+    }
+
+    public String getNrFaktury() {
+        return nrFaktury;
+    }
+
+    public void setNrFaktury(String nrFaktury) {
+        this.nrFaktury = nrFaktury;
     }
 
     public Kontrachent getKontrachent() {

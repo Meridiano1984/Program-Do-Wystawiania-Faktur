@@ -63,6 +63,7 @@ public class DatabaseInitialization {
                      faktura_id INT,
                      kontrachent_id INT,
                      produkt_id INT,
+                     ilosc_produktow INT,
                      PRIMARY KEY(faktura_id, produkt_id),
                      FOREIGN KEY(faktura_id) REFERENCES faktury(faktura_id) ON DELETE CASCADE ON UPDATE CASCADE,
                      FOREIGN KEY(kontrachent_id) REFERENCES kontrachenci(kontrachent_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -109,13 +110,13 @@ public class DatabaseInitialization {
 
 
 
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,1);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,2);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,5);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,3);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,4);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,1);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,2);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,1,20);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,2,30);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,5,11);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,3,12);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,4,33);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,1,44);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,3,2,55);");
 
             System.out.println("Dodano wystawione Faktury");
 
