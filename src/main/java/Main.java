@@ -22,7 +22,7 @@ public class Main {
         //KOMENDA DO USOWANIA POPRZEDNIEJ BAZY DANYCH
         databaseInitialization.usuwanieTabel();
 
-        databaseInitialization.tworzenieBazydanych();
+        databaseInitialization.tworzenieBazyDanychv2();
         databaseInitialization.dodaniePrzykładowychdanych();
 
 

@@ -108,6 +108,21 @@ public class Kontrachent {
         QueryExecutor.executeQuery("INSERT INTO kontrachenci (kontrachent_name,nip) VALUES('"+kontrachent.getNazwaKontrachenta()+"','"+kontrachent.getNIP()+"');");
 
     }
+
+    public static int getIdexKontrachenta(Kontrachent kontrachent){
+
+        int index = 01;
+
+
+        ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_name='" + kontrachent.getNazwaKontrachenta() + "';");
+
+//        if(result.next()){
+//
+//        }
+
+        return index;
+    }
+
 }
 
 

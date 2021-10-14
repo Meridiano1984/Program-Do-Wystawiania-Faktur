@@ -47,6 +47,7 @@ public class Produkt {
 
         Scanner scanner = new Scanner(System.in);
         boolean warunek = true;
+        Produkt produkt = null;
 
         System.out.println("DODAWANIE PRODUKTOW DO FAKTURY");
 
@@ -59,9 +60,15 @@ public class Produkt {
             switch (wybor) {
                 case 1:
                     Produkt.wyswietlanieWszystkichProduktow();
+                    System.out.print("Podaj indeks produktu któy chcesz dodoac do faktury");
+                    int wybranyProdukt = scanner.nextInt();
+                    Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
+                    produkt =Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt);
                     break;
                 case 2:
-                    Produkt.dodanieNowegoProduktu();
+                    produkt = Produkt.dodanieNowegoProduktu();
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt);
                     break;
                 case 3:
                     warunek = false;
@@ -78,16 +85,18 @@ public class Produkt {
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty;");
 
             result.next();
+            int produkt_id = result.getInt("produkt_id");
             String produkt_name = result.getString("produkt_name");
             float cena_brutto = result.getFloat("cena_brutto");
 
-            System.out.println(cena_brutto +"."+ produkt_name);
+            System.out.println(produkt_id +"."+ produkt_name + "  cena: " + cena_brutto);
 
 
             while(result.next()){
+                produkt_id = result.getInt("produkt_id");
                 cena_brutto = result.getInt("cena_brutto");
                 produkt_name = result.getString("produkt_name");
-                System.out.println(cena_brutto +"."+ produkt_name);
+                System.out.println(produkt_id +"."+ produkt_name + "  cena: " + cena_brutto);
 //                System.out.println( produkt_name);
 
             }
@@ -119,6 +128,57 @@ public class Produkt {
 
     }
 
+    public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt){
+
+        //TODO CZY JA NIE POWINIEM TWEGO ROZDZILIC NA OSBNE FUNKCJE? JAK POWINNY WYGLADAC FUNKCJE OBSLUGUJCE CRUDY?
+        try {
+
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
+            System.out.println(faktura.getNrFaktury());
+            System.out.println("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
+            result.next();
+
+
+
+            int faktura_id = result.getInt("faktura_id");
+
+            result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_name='"+ produkt.getNazwaProduktu()+"';");
+//            result.next();
+            if(result.next()){
+                System.out.println("Sa Dane ");
+            } else {
+                System.out.println("PUSTY");
+            }
+
+            int produkt_id = result.getInt("produkt_id");
+
+
+            QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + ",1);");
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Produkt getProoduktPoZadanymIndex(int index){
+
+        Produkt produkt =null;
+        try {
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id="+ index +";");
+            result.next();
+
+            String produkt_name = result.getString("produkt_name");
+            Float cenaBrutto = result.getFloat("cena_brutto");
+
+            produkt = new Produkt(produkt_name,cenaBrutto);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return produkt ;
+    }
 
 
 

@@ -1,10 +1,10 @@
 import DataBase.QueryExecutor;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -214,7 +214,7 @@ public class Faktura {
 
         LocalDate dzisiejszaData = LocalDate.now();
 
-        nowyNrFaktury = ("nr faktury: " + getLiczbaFaktur() + "/" + dzisiejszaData.getMonthValue() + "/" + dzisiejszaData.getYear() );
+        nowyNrFaktury = (getLiczbaFaktur() + "/" + dzisiejszaData.getMonthValue() + "/" + dzisiejszaData.getYear() );
 
         return nowyNrFaktury;
     }
@@ -260,6 +260,7 @@ public class Faktura {
         //TODO ZMIENIC ARCHITEKTURE BAZYDANYCH GDZIE FAKTURA-KONTRACHENT 1:1 A PRDUKTY TO IDK (TABICA/WIELE DO WIELU) BO TUTAJ DODOAJEMY DO FKATURY KONTRACHENTA A W BAZIE DANYCH TAK NIE MA
 
         Faktura faktura = new Faktura(dataWystawiania,kontrachent);
+        faktura.dodanieFakturyDoBazyDanych(faktura);
 
         Produkt.dodawanieProduktowDoFakturyv2(faktura);
 
@@ -267,31 +268,52 @@ public class Faktura {
 
 
 
-//        boolean warunek = false;
-//
-//        do{
-//
-//        }while(warunek);
+
 
     }
 
     public static Faktura getFakturaPoZadanymIndex(int index){
 
-        Faktura kontrachent =null;
+        Faktura faktura =null;
         try {
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE faktura_id="+ index +";");
             result.next();
 
-            String kontrachent_name = result.getString("kontrachent_name")           ;
-            String nip = result.getString("nip");
 
-            kontrachent = new Kontrachent(kontrachent_name,nip);
+
+            String nr_faktury =  result.getString("nr_faktury");
+            LocalDate dataWystawienia = result.getDate("data_wystawienia").toLocalDate();
+            int kontrachent_id = result.getInt("kontrachent_id");
+            Float cenaBrutto = result.getFloat("cenaBrutto");
+
+            faktura =  new Faktura(dataWystawienia,Kontrachent.getKontrachentPoZadanymIndex(kontrachent_id));
+//            kontrachent = new Kontrachent(kontrachent_name,nip);
 
         } catch (SQLException e){
             e.printStackTrace();
         }
 
-        return kontrachent ;
+        return faktura ;
     }
+
+    public void dodanieFakturyDoBazyDanych(Faktura faktura){
+
+        try{
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_name='" + faktura.getKontrachent().getNazwaKontrachenta()+"';");
+
+            result.next();
+            int kontrachent_id = result.getInt("kontrachent_id");
+            Date data_wystawienia = Date.valueOf(faktura.getDataWystawienia());
+            QueryExecutor.executeQuery("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + faktura.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
+            System.out.println("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + faktura.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+//        QueryExecutor.executeQuery("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES('"+produkt.getNazwaProduktu()+"','"+produkt.getCenaProduktuBrutto()+"');");
+
+    }
+
 
 }
