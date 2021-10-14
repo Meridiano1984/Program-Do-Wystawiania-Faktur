@@ -77,7 +77,6 @@ public class Produkt {
 
         }while(warunek);
     }
-//    awd
 
     public static void wyswietlanieWszystkichProduktow(){
         //POBIERANIE KONTRACHENTOW Z BAZY DANYCH
