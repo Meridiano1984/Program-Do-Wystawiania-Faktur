@@ -48,6 +48,7 @@ public class Produkt {
         Scanner scanner = new Scanner(System.in);
         boolean warunek = true;
         Produkt produkt = null;
+        int ilosc_produktow = 0;
 
         System.out.println("DODAWANIE PRODUKTOW DO FAKTURY");
 
@@ -60,15 +61,19 @@ public class Produkt {
             switch (wybor) {
                 case 1:
                     Produkt.wyswietlanieWszystkichProduktow();
-                    System.out.print("Podaj indeks produktu któy chcesz dodoac do faktury");
+                    System.out.print("Podaj indeks produktu któy chcesz dodoac do faktury:");
                     int wybranyProdukt = scanner.nextInt();
+                    System.out.print("Ilość: ");
+                    ilosc_produktow = scanner.nextInt();
                     Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
                     produkt =Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
-                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt);
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
                     break;
                 case 2:
                     produkt = Produkt.dodanieNowegoProduktu();
-                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt);
+                    System.out.print("Ilość: ");
+                    ilosc_produktow = scanner.nextInt();
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
                     break;
                 case 3:
                     warunek = false;
@@ -111,7 +116,7 @@ public class Produkt {
 
         System.out.println("Dodoanie nowego produktu:");
         System.out.print("Nazwa: ");
-        String nazwaProduktu = scanner.next();
+        String nazwaProduktu = scanner.nextLine();
         System.out.print("Cena: ");
         float cenaBruutProduktu = scanner.nextFloat();
 
@@ -128,7 +133,7 @@ public class Produkt {
 
     }
 
-    public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt){
+    public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt,int ilosc){
 
         //TODO CZY JA NIE POWINIEM TWEGO ROZDZILIC NA OSBNE FUNKCJE? JAK POWINNY WYGLADAC FUNKCJE OBSLUGUJCE CRUDY?
         try {
@@ -153,7 +158,7 @@ public class Produkt {
             int produkt_id = result.getInt("produkt_id");
 
 
-            QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + ",1);");
+            QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + "," +ilosc+");");
 
 
         }catch (SQLException e){

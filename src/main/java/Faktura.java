@@ -315,5 +315,81 @@ public class Faktura {
 
     }
 
+    public static void wyswietlanieFakturZBazyDnaych(){
+
+        int fakturaID;
+        String nrFaktury;
+        int kontrachentID;
+        LocalDate dataWystawienia;
+        Float cenaBrutto;
+        ResultSet resultProducts;
+        String produktName;
+        float cenaCałkowita =0;
+        int produktID;
+
+        try{
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury;");
+            while (result.next()){
+                cenaCałkowita = 0;
+                fakturaID = result.getInt("faktura_id");
+                nrFaktury = result.getString("nr_faktury");
+                kontrachentID = result.getInt("kontrachent_id");
+                dataWystawienia = result.getDate("data_wystawienia").toLocalDate();
+
+
+                Kontrachent kontrachent = Kontrachent.getKontrachentPoZadanymIndex(kontrachentID);
+
+                String nazwaKontrachenta = kontrachent.getNazwaKontrachenta();
+                String NIP = kontrachent.getNIP();
+
+                System.out.println(fakturaID + ". Nr Faktury: " + nrFaktury + " Data wystawiania: " + dataWystawienia + " Kontrachent: " + nazwaKontrachenta + " NIP: " + NIP);
+                System.out.println("TOWAR/USLUGI");
+
+                ResultSet resultWystawioneFaktury = QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id=" + fakturaID + ";");
+//            result.next();
+
+//            produktID = result.getInt("produkt_id");
+
+//            resultProducts = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id=" + produktID + ";");
+//            resultProducts.next();
+//            produktName = resultProducts.getString("produkt_name");
+//            cenaBrutto = resultProducts.getFloat("cena_brutto");
+//            System.out.println(produktID + "." + produktName + "    " + cenaBrutto);
+
+
+                while (resultWystawioneFaktury.next()) {
+                    produktID = resultWystawioneFaktury.getInt("produkt_id");
+                    resultProducts = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id=" + produktID + ";");
+                    resultProducts.next();
+                    produktName = resultProducts.getString("produkt_name");
+                    cenaBrutto = resultProducts.getFloat("cena_brutto");
+                    System.out.println(produktID + "." + produktName + "    " + cenaBrutto);
+
+                    cenaCałkowita += cenaBrutto;
+
+                }
+
+
+                System.out.println("\n\nCENA CAŁKOWITA: " + cenaCałkowita);
+
+//            faktura_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//                    nr_faktury VARCHAR(15),
+//                    data_wystawienia DATE,
+//                    kontrachent_id INT,
+//                    cenaBrutto FLOAT(2),
+
+
+//                    produkt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//                    produkt_name VARCHAR(40),
+//                    cena_brutto FLOAT(2)
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
 
 }

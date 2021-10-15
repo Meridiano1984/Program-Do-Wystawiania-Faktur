@@ -1,5 +1,9 @@
 package DataBase;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 import static DataBase.QueryExecutor.executeQuery;
 
 public class DatabaseInitialization {
@@ -79,7 +83,7 @@ public class DatabaseInitialization {
 
     public void dodaniePrzykładowychdanych(){
 
-
+        try {
             executeQuery("INSERT INTO kontrachenci VALUES(1,'Biedronka',1234567890);");
             executeQuery("INSERT INTO kontrachenci VALUES(2,'Autocentrum',2134567890);");
             executeQuery("INSERT INTO kontrachenci VALUES(3,'PGE-Belchatow',3354618291);");
@@ -89,9 +93,11 @@ public class DatabaseInitialization {
             executeQuery("INSERT INTO kontrachenci VALUES(7,'Riff',1231231234);");
 
             System.out.println("Dodano juz kontrachentow");
+        }catch (RuntimeException e ){
+            e.printStackTrace();
+        }
 
-
-
+        try {
             executeQuery("INSERT INTO produkty VALUES(1,'Mleko',2.50);");
             executeQuery("INSERT INTO produkty VALUES(2,'Laptop',2500)");
             executeQuery("INSERT INTO produkty VALUES(3,'Jeansy',250);");
@@ -100,15 +106,16 @@ public class DatabaseInitialization {
             executeQuery("INSERT INTO produkty VALUES(6,'Margherita',12.50);");
 
             System.out.println("Dodano produkty");
-
-
+        }catch (RuntimeException e ){
+            e.printStackTrace();
+        }
 
             executeQuery("INSERT INTO faktury VALUES(1,'1/10/2021','2021-12-23',1,0);");
             executeQuery("INSERT INTO faktury VALUES(2,'2/10/2021','2022-01-01',2,0);");
+            executeQuery("INSERT INTO faktury VALUES(3,'3/10/2021','2022-01-02',3,0);");
 
 
             System.out.println("Dodano faktury");
-
 
 
             executeQuery("INSERT INTO wystawione_faktury VALUES(1,2,112);");
@@ -118,6 +125,9 @@ public class DatabaseInitialization {
             executeQuery("INSERT INTO wystawione_faktury VALUES(2,1,33);");
             executeQuery("INSERT INTO wystawione_faktury VALUES(2,2,44);");
             executeQuery("INSERT INTO wystawione_faktury VALUES(2,4,55);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,1,11);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,2,22);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,3,33);");
 
             System.out.println("Dodano wystawione Faktury");
 
@@ -194,7 +204,8 @@ public class DatabaseInitialization {
 
 
 
-        Query = """
+        try {
+            Query = """
                     CREATE TABLE wystawione_faktury ( 
                      faktura_id INT,
                      produkt_id INT,
@@ -204,6 +215,12 @@ public class DatabaseInitialization {
                      FOREIGN KEY(produkt_id) REFERENCES produkty(produkt_id) ON DELETE CASCADE ON UPDATE CASCADE
                      );
                     """;
-        executeQuery(Query);
+            executeQuery(Query);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
     }
+
+
+
 }
