@@ -328,6 +328,7 @@ public class Faktura {
         int produktID;
 
         try{
+            //POBIERAMY FAKTURY
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury;");
             while (result.next()){
                 cenaCałkowita = 0;
@@ -336,7 +337,7 @@ public class Faktura {
                 kontrachentID = result.getInt("kontrachent_id");
                 dataWystawienia = result.getDate("data_wystawienia").toLocalDate();
 
-
+                //POBIERAMY KONTRACHENTA
                 Kontrachent kontrachent = Kontrachent.getKontrachentPoZadanymIndex(kontrachentID);
 
                 String nazwaKontrachenta = kontrachent.getNazwaKontrachenta();
@@ -345,17 +346,8 @@ public class Faktura {
                 System.out.println(fakturaID + ". Nr Faktury: " + nrFaktury + " Data wystawiania: " + dataWystawienia + " Kontrachent: " + nazwaKontrachenta + " NIP: " + NIP);
                 System.out.println("TOWAR/USLUGI");
 
+                //POBIERAMY PRODUKTY DO BAZYDANYCH
                 ResultSet resultWystawioneFaktury = QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id=" + fakturaID + ";");
-//            result.next();
-
-//            produktID = result.getInt("produkt_id");
-
-//            resultProducts = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id=" + produktID + ";");
-//            resultProducts.next();
-//            produktName = resultProducts.getString("produkt_name");
-//            cenaBrutto = resultProducts.getFloat("cena_brutto");
-//            System.out.println(produktID + "." + produktName + "    " + cenaBrutto);
-
 
                 while (resultWystawioneFaktury.next()) {
                     produktID = resultWystawioneFaktury.getInt("produkt_id");
@@ -370,18 +362,8 @@ public class Faktura {
                 }
 
 
-                System.out.println("\n\nCENA CAŁKOWITA: " + cenaCałkowita);
+                System.out.println("\nCENA CAŁKOWITA: " + cenaCałkowita+"\n\n\n");
 
-//            faktura_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//                    nr_faktury VARCHAR(15),
-//                    data_wystawienia DATE,
-//                    kontrachent_id INT,
-//                    cenaBrutto FLOAT(2),
-
-
-//                    produkt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//                    produkt_name VARCHAR(40),
-//                    cena_brutto FLOAT(2)
             }
         } catch (SQLException e){
             e.printStackTrace();

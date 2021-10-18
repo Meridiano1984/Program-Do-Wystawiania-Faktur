@@ -136,6 +136,7 @@ public class Produkt {
     public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt,int ilosc){
 
         //TODO CZY JA NIE POWINIEM TWEGO ROZDZILIC NA OSBNE FUNKCJE? JAK POWINNY WYGLADAC FUNKCJE OBSLUGUJCE CRUDY?
+        //TODO CZY MOZAN ROZDZIELIC WYSTAPIENIE EXEPTIONA OD BREKAEPOINTA?
         try {
 
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
@@ -163,6 +164,8 @@ public class Produkt {
 
         }catch (SQLException e){
             e.printStackTrace();
+        } catch (RuntimeException e){
+
         }
 
     }
@@ -183,6 +186,12 @@ public class Produkt {
         }
 
         return produkt ;
+    }
+
+    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura){
+
+        //todo gdzie przezucac logike wykonywania funkcji do programu czy do bazy SQL?
+
     }
 
 
