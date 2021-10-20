@@ -27,6 +27,13 @@ public class Faktura {
         liczbaFaktur++;
     }
 
+    private Faktura (LocalDate dataWystawienia, Kontrachent kontrachent, String nrFaktury, double cenaBrutto){
+        this.dataWystawienia = dataWystawienia;
+        this.kontrachent =kontrachent;
+        this.nrFaktury =nrFaktury;
+        this.cenaBrutto =cenaBrutto;
+    }
+
     public String getNrFaktury() {
         return nrFaktury;
     }
@@ -263,7 +270,7 @@ public class Faktura {
         faktura.dodanieFakturyDoBazyDanych(faktura);
 
         Produkt.dodawanieProduktowDoFakturyv2(faktura);
-
+        faktura.setCenaBruttoWFakturWystawionych(faktura);
 
 
 
@@ -286,7 +293,7 @@ public class Faktura {
             int kontrachent_id = result.getInt("kontrachent_id");
             Float cenaBrutto = result.getFloat("cenaBrutto");
 
-            faktura =  new Faktura(dataWystawienia,Kontrachent.getKontrachentPoZadanymIndex(kontrachent_id));
+            faktura =  new Faktura(dataWystawienia,Kontrachent.getKontrachentPoZadanymIndex(kontrachent_id),nr_faktury,cenaBrutto);
 //            kontrachent = new Kontrachent(kontrachent_name,nip);
 
         } catch (SQLException e){
@@ -370,6 +377,66 @@ public class Faktura {
         }
 
 
+
+    }
+
+    public static int getIndexFaktury(Faktura faktura){
+        int index=0;
+
+
+        ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
+        System.out.println("Nr faktury: " + faktura.getNrFaktury());
+
+        try {
+            result.next();
+            index = result.getInt("faktura_id");
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return index;
+    }
+
+    public void setCenaBruttoWFakturWystawionych(Faktura faktura){
+
+        int indexFaktury = Faktura.getIndexFaktury(faktura);
+
+//        System.out.println("indeks faktury: " + Faktura.getIndexFaktury(faktura));
+        ResultSet result = QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
+//        System.out.println("SELECT * FROM wystawione_faktury WHERE faktura_id="+ faktura.getNrFaktury() + ";");
+
+        int iloscProduktu,indexProduktu;
+        Produkt produkt;
+        float cena;
+        try{
+
+            while (result.next()){
+                iloscProduktu = result.getInt("ilosc_produktow");
+                indexProduktu = result.getInt("produkt_id");
+
+                produkt = Produkt.getProoduktPoZadanymIndex(indexProduktu);
+
+
+                cena=produkt.getCenaProduktuBrutto()*iloscProduktu;
+
+                QueryExecutor.executeQuery("UPDATE wystawione_faktury SET cena_Brutto=" +cena+ " WHERE produkt_id=" + indexProduktu + " AND faktura_id=" + indexFaktury + ";");
+                System.out.println("UPDATE wystawione_faktury SET cena_Brutto=" +cena+ " WHERE produkt_id=" + indexProduktu + " AND faktura_id=" + indexFaktury + ";");
+
+
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+
+
+    }
+
+    private void setCenaBruttoFakturyWBazieDanych(Faktura faktura){
 
     }
 

@@ -110,15 +110,16 @@ public class Kontrachent {
     }
 
     public static int getIdexKontrachenta(Kontrachent kontrachent){
-
-        int index = 01;
-
+        int index = 0;
 
         ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_name='" + kontrachent.getNazwaKontrachenta() + "';");
+        try {
+            result.next();
+            index = result.getInt("kontrachent_id");
 
-//        if(result.next()){
-//
-//        }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
         return index;
     }

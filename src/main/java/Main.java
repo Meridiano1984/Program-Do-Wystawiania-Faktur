@@ -20,11 +20,22 @@ public class Main {
 
         DatabaseInitialization databaseInitialization = new DatabaseInitialization();
 
+//        Faktura faktura =Faktura.getFakturaPoZadanymIndex(1);
+//        faktura.setCenaBruttoWFakturWystawionych(faktura);
+
         //KOMENDA DO USOWANIA POPRZEDNIEJ BAZY DANYCH
         databaseInitialization.usuwanieTabel();
 
         databaseInitialization.tworzenieBazyDanychv2();
         databaseInitialization.dodaniePrzykładowychdanych();
+
+        //USTWANIE CENN BRUTTO W WYSTAWIONYCH FAKTURACH
+        Faktura faktura =Faktura.getFakturaPoZadanymIndex(1);
+        faktura.setCenaBruttoWFakturWystawionych(faktura);
+        faktura =Faktura.getFakturaPoZadanymIndex(2);
+        faktura.setCenaBruttoWFakturWystawionych(faktura);
+         faktura =Faktura.getFakturaPoZadanymIndex(3);
+        faktura.setCenaBruttoWFakturWystawionych(faktura);
 
 
 

@@ -50,7 +50,7 @@ public class DatabaseInitialization {
                      CREATE TABLE produkty ( 
                      produkt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                      produkt_name VARCHAR(40),
-                     cena_brutto FLOAT(2)
+                     cena_brutto FLOAT(20)
                      );
                     """;
 
@@ -118,16 +118,16 @@ public class DatabaseInitialization {
             System.out.println("Dodano faktury");
 
 
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,2,112);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,3,22);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,4,53);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,31);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,1,33);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,2,44);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(2,4,55);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(3,1,11);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(3,2,22);");
-            executeQuery("INSERT INTO wystawione_faktury VALUES(3,3,33);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,2,112,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,3,22,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,4,53,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(1,1,31,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,1,33,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,2,44,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(2,4,55,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,1,11,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,2,22,0);");
+            executeQuery("INSERT INTO wystawione_faktury VALUES(3,3,33,0);");
 
             System.out.println("Dodano wystawione Faktury");
 
@@ -190,7 +190,7 @@ public class DatabaseInitialization {
                      CREATE TABLE produkty ( 
                      produkt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                      produkt_name VARCHAR(40),
-                     cena_brutto FLOAT(2)
+                     cena_brutto FLOAT(4)
                      );
                     """;
 
@@ -210,6 +210,7 @@ public class DatabaseInitialization {
                      faktura_id INT,
                      produkt_id INT,
                      ilosc_produktow INT,
+                     cena_Brutto FLOAT(4),
                      PRIMARY KEY(faktura_id, produkt_id),
                      FOREIGN KEY(faktura_id) REFERENCES faktury(faktura_id) ON DELETE CASCADE ON UPDATE CASCADE,
                      FOREIGN KEY(produkt_id) REFERENCES produkty(produkt_id) ON DELETE CASCADE ON UPDATE CASCADE

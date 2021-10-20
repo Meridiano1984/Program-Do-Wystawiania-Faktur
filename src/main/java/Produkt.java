@@ -65,7 +65,7 @@ public class Produkt {
                     int wybranyProdukt = scanner.nextInt();
                     System.out.print("Ilość: ");
                     ilosc_produktow = scanner.nextInt();
-                    Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
+//                    Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
                     produkt =Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
                     produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
                     break;
@@ -86,20 +86,24 @@ public class Produkt {
     public static void wyswietlanieWszystkichProduktow(){
         //POBIERANIE KONTRACHENTOW Z BAZY DANYCH
 
+        int produkt_id;
+        String produkt_name;
+        float cena_brutto;
+
         try {
             ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty;");
 
-            result.next();
-            int produkt_id = result.getInt("produkt_id");
-            String produkt_name = result.getString("produkt_name");
-            float cena_brutto = result.getFloat("cena_brutto");
-
-            System.out.println(produkt_id +"."+ produkt_name + "  cena: " + cena_brutto);
+//            result.next();
+//            int produkt_id = result.getInt("produkt_id");
+//            String produkt_name = result.getString("produkt_name");
+//            float cena_brutto = result.getFloat("cena_brutto");
+//
+//            System.out.println(produkt_id +"."+ produkt_name + "  cena: " + cena_brutto);
 
 
             while(result.next()){
                 produkt_id = result.getInt("produkt_id");
-                cena_brutto = result.getInt("cena_brutto");
+                cena_brutto = result.getFloat("cena_brutto");
                 produkt_name = result.getString("produkt_name");
                 System.out.println(produkt_id +"."+ produkt_name + "  cena: " + cena_brutto);
 //                System.out.println( produkt_name);
@@ -149,23 +153,25 @@ public class Produkt {
             int faktura_id = result.getInt("faktura_id");
 
             result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_name='"+ produkt.getNazwaProduktu()+"';");
-//            result.next();
-            if(result.next()){
-                System.out.println("Sa Dane ");
-            } else {
-                System.out.println("PUSTY");
-            }
+            result.next();
+//            if(result.next()){
+//                System.out.println("Sa Dane ");
+//            } else {
+//                System.out.println("PUSTY");
+//            }
 
             int produkt_id = result.getInt("produkt_id");
 
 
-            QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + "," +ilosc+");");
+//            System.out.println("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + "," +ilosc+",0);");
 
-
+            try {
+                QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + "," + ilosc + ",0);");
+            } catch (RuntimeException f) {
+                produkt.sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(produkt, faktura, ilosc);
+            }
         }catch (SQLException e){
             e.printStackTrace();
-        } catch (RuntimeException e){
-
         }
 
     }
@@ -188,10 +194,39 @@ public class Produkt {
         return produkt ;
     }
 
-    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura){
-
+    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura,int ilosc){
         //todo gdzie przezucac logike wykonywania funkcji do programu czy do bazy SQL?
 
+        int indexProduktuDoSprawdzenia = Produkt.getIndexProduktu(produkt);
+        int indexFakturyDoSprawdzenia = Faktura.getIndexFaktury(faktura);
+        System.out.println("SELECT * FROM wystawione_faktury WHERE faktura_id=" + indexFakturyDoSprawdzenia + " AND produkt_id=" + indexProduktuDoSprawdzenia + ";");
+        ResultSet result = QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id=" + indexFakturyDoSprawdzenia + " AND produkt_id=" + indexProduktuDoSprawdzenia + ";");
+        try {
+            if(result.next()){
+                QueryExecutor.executeQuery("UPDATE wystawione_faktury SET ilosc_produktow = ilosc_produktow+" + ilosc + " WHERE faktura_id=" + indexFakturyDoSprawdzenia + " AND produkt_id=" + indexProduktuDoSprawdzenia + ";" );
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    public static int getIndexProduktu(Produkt produkt){
+        int index = 0;
+
+        ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_name='"+ produkt.getNazwaProduktu()+"';");
+
+        try {
+            result.next();
+            index = result.getInt("produkt_id");
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return index;
     }
 
 
