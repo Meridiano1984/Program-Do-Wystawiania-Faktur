@@ -271,6 +271,7 @@ public class Faktura {
 
         Produkt.dodawanieProduktowDoFakturyv2(faktura);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
+        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
 
 
 
@@ -437,6 +438,22 @@ public class Faktura {
     }
 
     private void setCenaBruttoFakturyWBazieDanych(Faktura faktura){
+
+        ResultSet result =  QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
+//        System.out.println("SELECT * FROM wystawione_faktury WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
+        float cenaFakturyBrutto=0;
+        try {
+
+            while (result.next()) {
+                cenaFakturyBrutto = cenaFakturyBrutto +result.getInt("cena_Brutto");
+            }
+
+            System.out.println("UPDATE faktury SET cenaBrutto=" + cenaFakturyBrutto +" WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
+            QueryExecutor.executeQuery("UPDATE faktury SET cenaBrutto=" + cenaFakturyBrutto +" WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";" );
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
 
     }
 

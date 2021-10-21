@@ -26,16 +26,23 @@ public class Main {
         //KOMENDA DO USOWANIA POPRZEDNIEJ BAZY DANYCH
         databaseInitialization.usuwanieTabel();
 
+        //KOMENDY DO TWORZENIE I INICJALIZACJI BAZY DANYCH
         databaseInitialization.tworzenieBazyDanychv2();
         databaseInitialization.dodaniePrzykładowychdanych();
 
         //USTWANIE CENN BRUTTO W WYSTAWIONYCH FAKTURACH
         Faktura faktura =Faktura.getFakturaPoZadanymIndex(1);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
+//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+
         faktura =Faktura.getFakturaPoZadanymIndex(2);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
-         faktura =Faktura.getFakturaPoZadanymIndex(3);
+//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+
+        faktura =Faktura.getFakturaPoZadanymIndex(3);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
+//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+
 
 
 
