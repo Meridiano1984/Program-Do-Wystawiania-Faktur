@@ -12,6 +12,7 @@ public class Main {
 
     public static void  main(String[] args){
 
+
         //KOMENDY DO INICJALIZACJI BAZY DANYCH MYSQL
         //TODO dodac inicjalizacje schema w MYSQL a nie robic to recznie
         //TODO CZY JESLI LACZYMY JAKIS PROPGRAM Z BAZ DANYCH TO OBIEKTY W NIM POWINNY BYC ODZWIERCIEDLENIM TYCH W DB? CZY NA ODWROT CZY INACZEJ?
