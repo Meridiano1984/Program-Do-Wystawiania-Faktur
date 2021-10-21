@@ -448,7 +448,7 @@ public class Faktura {
                 cenaFakturyBrutto = cenaFakturyBrutto +result.getInt("cena_Brutto");
             }
 
-            System.out.println("UPDATE faktury SET cenaBrutto=" + cenaFakturyBrutto +" WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
+//            System.out.println("UPDATE faktury SET cenaBrutto=" + cenaFakturyBrutto +" WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";");
             QueryExecutor.executeQuery("UPDATE faktury SET cenaBrutto=" + cenaFakturyBrutto +" WHERE faktura_id="+ Faktura.getIndexFaktury(faktura) + ";" );
         } catch (SQLException e){
             e.printStackTrace();
