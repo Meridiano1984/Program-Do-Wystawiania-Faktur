@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Produkt {
+public class Produkt implements DataBaseOperations,ProduktInterface {
 
     //TODO ZDECYDUJ SIE CZY CEN PRODUKTU PRUTTO CZY NETTO
 
@@ -43,7 +43,7 @@ public class Produkt {
         this.cenaProduktuBrutto = cenaProduktuNetto;
     }
 
-    public static void dodawanieProduktowDoFakturyv2(Faktura faktura){
+    public static void dodawanieProduktowDoFaktury(Faktura faktura){
 
         Scanner scanner = new Scanner(System.in);
         boolean warunek = true;
@@ -60,13 +60,13 @@ public class Produkt {
 
             switch (wybor) {
                 case 1:
-                    Produkt.wyswietlanieWszystkichProduktow();
+                    Produkt.displayAllFromDataBase();
                     System.out.print("Podaj indeks produktu któy chcesz dodoac do faktury:");
                     int wybranyProdukt = scanner.nextInt();
                     System.out.print("Ilość: ");
                     ilosc_produktow = scanner.nextInt();
 //                    Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
-                    produkt =Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
+                    produkt =Produkt.getByIndexFromDataBase(wybranyProdukt);
                     produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
                     break;
                 case 2:
@@ -83,7 +83,31 @@ public class Produkt {
         }while(warunek);
     }
 
-    public static void wyswietlanieWszystkichProduktow(){
+    public static Produkt getByIndexFromDataBase(int index){
+
+        Produkt produkt =null;
+        try {
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id="+ index +";");
+            result.next();
+
+            String produkt_name = result.getString("produkt_name");
+            Float cenaBrutto = result.getFloat("cena_brutto");
+
+            produkt = new Produkt(produkt_name,cenaBrutto);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return produkt ;
+    }
+
+    @Override
+    public void addToDataBase(){
+        QueryExecutor.executeQuery("INSERT INTO produkty (produkt_name,cena_brutto) VALUES('"+this.getNazwaProduktu()+"','"+this.getCenaProduktuBrutto()+"');");
+
+    }
+
+    public static void displayAllFromDataBase(){
         //POBIERANIE KONTRACHENTOW Z BAZY DANYCH
 
         int produkt_id;
@@ -125,18 +149,13 @@ public class Produkt {
         float cenaBruutProduktu = scanner.nextFloat();
 
         Produkt produkt = new Produkt(nazwaProduktu,cenaBruutProduktu);
-        produkt.dodanieProduktuDoBazyDanych(produkt);
+        produkt.addToDataBase();
 
         return produkt;
 
     }
 
-
-    public void dodanieProduktuDoBazyDanych(Produkt produkt){
-        QueryExecutor.executeQuery("INSERT INTO produkty (produkt_name,cena_brutto) VALUES('"+produkt.getNazwaProduktu()+"','"+produkt.getCenaProduktuBrutto()+"');");
-
-    }
-
+    @Override
     public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt,int ilosc){
 
         //TODO CZY JA NIE POWINIEM TWEGO ROZDZILIC NA OSBNE FUNKCJE? JAK POWINNY WYGLADAC FUNKCJE OBSLUGUJCE CRUDY?
@@ -176,24 +195,7 @@ public class Produkt {
 
     }
 
-    public static Produkt getProoduktPoZadanymIndex(int index){
-
-        Produkt produkt =null;
-        try {
-            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM produkty WHERE produkt_id="+ index +";");
-            result.next();
-
-            String produkt_name = result.getString("produkt_name");
-            Float cenaBrutto = result.getFloat("cena_brutto");
-
-            produkt = new Produkt(produkt_name,cenaBrutto);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        return produkt ;
-    }
-
+    @Override
     public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura,int ilosc){
         //todo gdzie przezucac logike wykonywania funkcji do programu czy do bazy SQL?
 
@@ -228,7 +230,4 @@ public class Produkt {
         }
         return index;
     }
-
-
-
 }

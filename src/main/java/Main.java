@@ -1,11 +1,7 @@
 import DataBase.DatabaseInitialization;
-import com.sun.jdi.connect.spi.TransportService;
 
-import javax.swing.*;
-import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.Date;
 
 public class Main {
 
@@ -32,15 +28,15 @@ public class Main {
         databaseInitialization.dodaniePrzykładowychdanych();
 
         //USTWANIE CENN BRUTTO W WYSTAWIONYCH FAKTURACH
-        Faktura faktura =Faktura.getFakturaPoZadanymIndex(1);
+        Faktura faktura =Faktura.getByIndexFromDataBase(1);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
 //        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
 
-        faktura =Faktura.getFakturaPoZadanymIndex(2);
+        faktura =Faktura.getByIndexFromDataBase(2);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
 //        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
 
-        faktura =Faktura.getFakturaPoZadanymIndex(3);
+        faktura =Faktura.getByIndexFromDataBase(3);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
 //        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
 

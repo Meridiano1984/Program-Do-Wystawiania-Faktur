@@ -4,11 +4,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Faktura {
+public class Faktura implements DataBaseOperations, FakturaInterface {
 
     private static int liczbaFaktur=0;
 
@@ -16,7 +14,6 @@ public class Faktura {
     private Kontrachent kontrachent;
     private String      nrFaktury;
     private double      cenaBrutto;
-    private LinkedList<Produkt> produkty = new LinkedList<>();
 
 
     public Faktura(LocalDate dataWystawienia, Kontrachent kontrachent) {
@@ -66,7 +63,6 @@ public class Faktura {
         this.dataWystawienia = dataWystawienia;
     }
 
-
     public double getCenaBrutto() {
         return cenaBrutto;
     }
@@ -75,145 +71,140 @@ public class Faktura {
         this.cenaBrutto = cenaBrutto;
     }
 
-    public LinkedList<Produkt> getProdukty() {
-        return produkty;
-    }
-
-    public void setProdukty(LinkedList<Produkt> produkty) {
-        this.produkty = produkty;
-    }
-
-    public static void wyswietlanieFaktur (ArrayList<Faktura> listaFaktur){
-        for (Faktura faktura: listaFaktur) {
-
-            System.out.println("Faktura nr:" + listaFaktur.indexOf(faktura));
-            System.out.println("Data wystawienia: " + faktura.getDataWystawienia());
-            System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP() + " nr Faktury: " + faktura.getNrFaktury());
-            System.out.println("CenaBrutto: " + faktura.getCenaBrutto());
-            System.out.println();
-
-            int nrProduktu = 1;
-            System.out.println("PRODUKTY");
-            for (Produkt produkt: faktura.getProdukty()){
-                System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
-                nrProduktu++;
-            }
-
-            System.out.println();
-            System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
-            System.out.println();
 
 
 
-        }
-    }
+//    public static void wyswietlanieFaktur (ArrayList<Faktura> listaFaktur){
+//        for (Faktura faktura: listaFaktur) {
+//
+//            System.out.println("Faktura nr:" + listaFaktur.indexOf(faktura));
+//            System.out.println("Data wystawienia: " + faktura.getDataWystawienia());
+//            System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP() + " nr Faktury: " + faktura.getNrFaktury());
+//            System.out.println("CenaBrutto: " + faktura.getCenaBrutto());
+//            System.out.println();
+//
+//            int nrProduktu = 1;
+//            System.out.println("PRODUKTY");
+//            for (Produkt produkt: faktura.getProdukty()){
+//                System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
+//                nrProduktu++;
+//            }
+//
+//            System.out.println();
+//            System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
+//            System.out.println();
+//
+//
+//
+//        }
+//    }
 
-    public static void wyswietlanieKonkretnejFaktury(ArrayList<Faktura> listaFaktur){
+//    public static void wyswietlanieKonkretnejFaktury(ArrayList<Faktura> listaFaktur){
+//
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.print("Podaj indeks faktury ktora chcesz wyswietlic: ");
+//        int nrFaktury = scanner.nextInt();
+//
+//        Faktura faktura = listaFaktur.get(nrFaktury-1);
+//
+//        System.out.println("Faktura nr: " + nrFaktury);
+//        System.out.println("Data wystawienia :" + faktura.getDataWystawienia());
+//        System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
+//        System.out.println();
+//        System.out.println("PRODUKTY");
+//        int nrProduktu = 1;
+//
+//        for (Produkt produkt: faktura.getProdukty()){
+//            System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
+//            nrProduktu++;
+//        }
+//
+//        System.out.println();
+//        System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
+//        System.out.println();
+//
+//
+//    }
 
-        Scanner scanner = new Scanner(System.in);
+//    public static void dodanieNowejFaktury (ArrayList<Faktura> listaFaktur){
+//
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("        Dodawanie nowej faktury");
+//        System.out.println("1.Data wystawienia ");
+//        System.out.print("      Rok:");
+//        int rok = scanner.nextInt();
+//        System.out.print("      Miesiąc:");
+//        int miesiac = scanner.nextInt();
+//        System.out.print("      Dzien:");
+//        int dzien = scanner.nextInt();
+//
+//        LocalDate dataWystawiania = LocalDate.of(rok,miesiac,dzien);
+//
+//        Kontrachent kontrachent;
+//
+//        System.out.println("2.Dane Kontrachenta ");
+//        System.out.print("      Nazwa Kontrachenta: ");
+//        String nazwaKontrachenta = scanner.next();
+//        System.out.print("      NIP: ");
+//        String nip = scanner.next();
+//
+//        kontrachent = new Kontrachent(nazwaKontrachenta,nip);
+//
+//        Faktura faktura = new Faktura(dataWystawiania,kontrachent);
+//        listaFaktur.add(faktura);
+//
+//        Faktura.dodawainieProduktowDoNowejFaktury(faktura);
+//
+//        System.out.println();
+//        System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
+//        System.out.println();
+//
+//
+//    }
 
-        System.out.print("Podaj indeks faktury ktora chcesz wyswietlic: ");
-        int nrFaktury = scanner.nextInt();
-
-        Faktura faktura = listaFaktur.get(nrFaktury-1);
-
-        System.out.println("Faktura nr: " + nrFaktury);
-        System.out.println("Data wystawienia :" + faktura.getDataWystawienia());
-        System.out.println("Nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
-        System.out.println();
-        System.out.println("PRODUKTY");
-        int nrProduktu = 1;
-
-        for (Produkt produkt: faktura.getProdukty()){
-            System.out.println(nrProduktu + ".Nazwa: " + produkt.getNazwaProduktu() + " cena brutto: " + produkt.getCenaProduktuBrutto());
-            nrProduktu++;
-        }
-
-        System.out.println();
-        System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
-        System.out.println();
-
-
-    }
-
-    public static void dodanieNowejFaktury (ArrayList<Faktura> listaFaktur){
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("        Dodawanie nowej faktury");
-        System.out.println("1.Data wystawienia ");
-        System.out.print("      Rok:");
-        int rok = scanner.nextInt();
-        System.out.print("      Miesiąc:");
-        int miesiac = scanner.nextInt();
-        System.out.print("      Dzien:");
-        int dzien = scanner.nextInt();
-
-        LocalDate dataWystawiania = LocalDate.of(rok,miesiac,dzien);
-
-        Kontrachent kontrachent;
-
-        System.out.println("2.Dane Kontrachenta ");
-        System.out.print("      Nazwa Kontrachenta: ");
-        String nazwaKontrachenta = scanner.next();
-        System.out.print("      NIP: ");
-        String nip = scanner.next();
-
-        kontrachent = new Kontrachent(nazwaKontrachenta,nip);
-
-        Faktura faktura = new Faktura(dataWystawiania,kontrachent);
-        listaFaktur.add(faktura);
-
-        Faktura.dodawainieProduktowDoNowejFaktury(faktura);
-
-        System.out.println();
-        System.out.println("CENA BRUTTO WYNOSI: " + faktura.getCenaBrutto());
-        System.out.println();
-
-
-    }
-
-    public static void dodawainieProduktowDoNowejFaktury(Faktura faktura){
-        System.out.println("                                                    Dodawanie Produktów");
-        System.out.println("Faktura nr: " + liczbaFaktur + " Wystawiona: " + faktura.getDataWystawienia() + " nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
-
-        System.out.println();
-
-
-        LinkedList<Produkt> produkty = new LinkedList<>();
-
-        boolean warunek = false;
-        int nrProduktu = 0;
-
-        do {
-            System.out.println("Produk nr: " + nrProduktu );
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Nazwa Produktu: ");
-            String nazwaProduktu = scanner.next();
-            System.out.print("Cena Produktu brutto: ");
-            float cenaBrutto = scanner.nextFloat();
-            faktura.setCenaBrutto(faktura.getCenaBrutto()+cenaBrutto);
-
-            produkty.add(new Produkt(nazwaProduktu,cenaBrutto));
-
-            System.out.println();
-            System.out.println();
-            System.out.println("1.Dodaj kolejny produkt");
-            System.out.println("2.Wystaw Fakture");
-
-            int wybor = scanner.nextInt();
-
-            if (wybor == 1) {
-                warunek = true;
-                nrProduktu++;
-            } else if (wybor != 1) {
-                warunek = false;
-            }
-
-        } while(warunek);
-
-        faktura.setProdukty(produkty);
-    }
+//    public static void dodawainieProduktowDoNowejFaktury(Faktura faktura){
+//        System.out.println("                                                    Dodawanie Produktów");
+//        System.out.println("Faktura nr: " + liczbaFaktur + " Wystawiona: " + faktura.getDataWystawienia() + " nabywca: " + faktura.getKontrachent().getNazwaKontrachenta() + " NIP: " + faktura.getKontrachent().getNIP());
+//
+//        System.out.println();
+//
+//
+//        LinkedList<Produkt> produkty = new LinkedList<>();
+//
+//        boolean warunek = false;
+//        int nrProduktu = 0;
+//
+//        do {
+//            System.out.println("Produk nr: " + nrProduktu );
+//            Scanner scanner = new Scanner(System.in);
+//            System.out.print("Nazwa Produktu: ");
+//            String nazwaProduktu = scanner.next();
+//            System.out.print("Cena Produktu brutto: ");
+//            float cenaBrutto = scanner.nextFloat();
+//            faktura.setCenaBrutto(faktura.getCenaBrutto()+cenaBrutto);
+//
+//            produkty.add(new Produkt(nazwaProduktu,cenaBrutto));
+//
+//            System.out.println();
+//            System.out.println();
+//            System.out.println("1.Dodaj kolejny produkt");
+//            System.out.println("2.Wystaw Fakture");
+//
+//            int wybor = scanner.nextInt();
+//
+//            if (wybor == 1) {
+//                warunek = true;
+//                nrProduktu++;
+//            } else if (wybor != 1) {
+//                warunek = false;
+//            }
+//
+//        } while(warunek);
+//
+//        faktura.setProdukty(produkty);
+//    }
 
     private String nadawanieNumeruFakturyWKonstruktorze(){
 
@@ -226,7 +217,7 @@ public class Faktura {
         return nowyNrFaktury;
     }
 
-    public static void dodawnaieNowejFakturyv2(){
+    public static void dodawnaieNowejFaktury(){
 
         //POBIERANIE DATY
         Scanner scanner = new Scanner(System.in);
@@ -253,10 +244,10 @@ public class Faktura {
 
         switch (wybor){
             case 1:
-                Kontrachent.wyswietlanieWszystkichKontrachentow();
+                Kontrachent.displayAllFromDataBase();
                 System.out.print("Podaj numer kontrachenta ktorego chcesz dodac:");
                 int wyborKontrachenta = scanner.nextInt();
-                kontrachent = Kontrachent.getKontrachentPoZadanymIndex(wyborKontrachenta);
+                kontrachent = Kontrachent.getByIndexFromDataBase(wyborKontrachenta);
                 break;
             case 2:
                 kontrachent =Kontrachent.dodanieNowegoKontrachenta();
@@ -267,9 +258,9 @@ public class Faktura {
         //TODO ZMIENIC ARCHITEKTURE BAZYDANYCH GDZIE FAKTURA-KONTRACHENT 1:1 A PRDUKTY TO IDK (TABICA/WIELE DO WIELU) BO TUTAJ DODOAJEMY DO FKATURY KONTRACHENTA A W BAZIE DANYCH TAK NIE MA
 
         Faktura faktura = new Faktura(dataWystawiania,kontrachent);
-        faktura.dodanieFakturyDoBazyDanych(faktura);
+        faktura.addToDataBase();
 
-        Produkt.dodawanieProduktowDoFakturyv2(faktura);
+        Produkt.dodawanieProduktowDoFaktury(faktura);
         faktura.setCenaBruttoWFakturWystawionych(faktura);
         faktura.setCenaBruttoFakturyWBazieDanych(faktura);
 
@@ -280,7 +271,7 @@ public class Faktura {
 
     }
 
-    public static Faktura getFakturaPoZadanymIndex(int index){
+    public static Faktura getByIndexFromDataBase(int index){
 
         Faktura faktura =null;
         try {
@@ -294,7 +285,7 @@ public class Faktura {
             int kontrachent_id = result.getInt("kontrachent_id");
             Float cenaBrutto = result.getFloat("cenaBrutto");
 
-            faktura =  new Faktura(dataWystawienia,Kontrachent.getKontrachentPoZadanymIndex(kontrachent_id),nr_faktury,cenaBrutto);
+            faktura =  new Faktura(dataWystawienia,Kontrachent.getByIndexFromDataBase(kontrachent_id),nr_faktury,cenaBrutto);
 //            kontrachent = new Kontrachent(kontrachent_name,nip);
 
         } catch (SQLException e){
@@ -304,16 +295,17 @@ public class Faktura {
         return faktura ;
     }
 
-    public void dodanieFakturyDoBazyDanych(Faktura faktura){
+    @Override
+    public void addToDataBase(){
 
         try{
-            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_name='" + faktura.getKontrachent().getNazwaKontrachenta()+"';");
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM kontrachenci WHERE kontrachent_name='" + this.getKontrachent().getNazwaKontrachenta()+"';");
 
             result.next();
             int kontrachent_id = result.getInt("kontrachent_id");
-            Date data_wystawienia = Date.valueOf(faktura.getDataWystawienia());
-            QueryExecutor.executeQuery("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + faktura.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
-            System.out.println("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + faktura.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
+            Date data_wystawienia = Date.valueOf(this.getDataWystawienia());
+            QueryExecutor.executeQuery("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + this.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
+            System.out.println("INSERT INTO faktury (nr_faktury,data_wystawienia,kontrachent_id,cenaBrutto) VALUES ('" + this.getNrFaktury()+"','"+ data_wystawienia +"'," + kontrachent_id +",0);");
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -323,7 +315,7 @@ public class Faktura {
 
     }
 
-    public static void wyswietlanieFakturZBazyDnaych(){
+    public static void displayAllFromDataBase(){
 
         int fakturaID;
         String nrFaktury;
@@ -346,7 +338,7 @@ public class Faktura {
                 dataWystawienia = result.getDate("data_wystawienia").toLocalDate();
 
                 //POBIERAMY KONTRACHENTA
-                Kontrachent kontrachent = Kontrachent.getKontrachentPoZadanymIndex(kontrachentID);
+                Kontrachent kontrachent = Kontrachent.getByIndexFromDataBase(kontrachentID);
 
                 String nazwaKontrachenta = kontrachent.getNazwaKontrachenta();
                 String NIP = kontrachent.getNIP();
@@ -416,7 +408,7 @@ public class Faktura {
                 iloscProduktu = result.getInt("ilosc_produktow");
                 indexProduktu = result.getInt("produkt_id");
 
-                produkt = Produkt.getProoduktPoZadanymIndex(indexProduktu);
+                produkt = Produkt.getByIndexFromDataBase(indexProduktu);
 
 
                 cena=produkt.getCenaProduktuBrutto()*iloscProduktu;

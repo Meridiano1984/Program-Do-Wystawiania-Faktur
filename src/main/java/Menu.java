@@ -21,20 +21,20 @@ public class Menu {
         switch (liczbaSterujaca){
             case 1:
 //                Faktura.wyswietlanieFaktur(listaFaktur);
-                Faktura.wyswietlanieFakturZBazyDnaych();
+                Faktura.displayAllFromDataBase();
 
                 break;
             case 2:
 //                Faktura.dodanieNowejFaktury(listaFaktur);
-                Faktura.dodawnaieNowejFakturyv2();
+                Faktura.dodawnaieNowejFaktury();
 
                 break;
             case 3:
 //                Faktura.wyswietlanieKonkretnejFaktury(listaFaktur);
-                Kontrachent.wyswietlanieWszystkichKontrachentow();
+                Kontrachent.displayAllFromDataBase();
                 break;
             case 4:
-                Produkt.wyswietlanieWszystkichProduktow();
+                Produkt.displayAllFromDataBase();
                 break;
 
             case 21:

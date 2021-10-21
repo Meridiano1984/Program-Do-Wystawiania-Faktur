@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Kontrachent {
+public class Kontrachent implements DataBaseOperations, KontrachentInterface {
 
     static  private int liczbaKontrachentow=0;
     private String nazwaKontrachenta;
@@ -15,7 +15,6 @@ public class Kontrachent {
         this.NIP = NIP;
         liczbaKontrachentow++;
     }
-
 
     public static int getLiczbaKontrachentow() {
         return liczbaKontrachentow;
@@ -41,7 +40,7 @@ public class Kontrachent {
         this.NIP = NIP;
     }
 
-    public static Kontrachent getKontrachentPoZadanymIndex(int index){
+    public static Kontrachent getByIndexFromDataBase(int index){
 
         Kontrachent kontrachent =null;
         try {
@@ -60,7 +59,14 @@ public class Kontrachent {
         return kontrachent ;
     }
 
-    public static void wyswietlanieWszystkichKontrachentow(){
+    @Override
+    public void addToDataBase(){
+
+        QueryExecutor.executeQuery("INSERT INTO kontrachenci (kontrachent_name,nip) VALUES('"+this.getNazwaKontrachenta()+"','"+this.getNIP()+"');");
+
+    }
+
+    public static void displayAllFromDataBase(){
         //POBIERANIE KONTRACHENTOW Z BAZY DANYCH
 
         try {
@@ -96,17 +102,10 @@ public class Kontrachent {
         String nip = scanner.next();
 
         Kontrachent kontrachent = new Kontrachent(nazwaKontrachenta,nip);
-        kontrachent.dodanieKontrachentaDoBazyDanych(kontrachent);
+        kontrachent.addToDataBase();
 
 
         return  kontrachent;
-    }
-
-
-    public void dodanieKontrachentaDoBazyDanych(Kontrachent kontrachent){
-
-        QueryExecutor.executeQuery("INSERT INTO kontrachenci (kontrachent_name,nip) VALUES('"+kontrachent.getNazwaKontrachenta()+"','"+kontrachent.getNIP()+"');");
-
     }
 
     public static int getIdexKontrachenta(Kontrachent kontrachent){
