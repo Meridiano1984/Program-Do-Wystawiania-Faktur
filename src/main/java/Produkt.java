@@ -43,7 +43,7 @@ public class Produkt implements DataBaseOperations,ProduktInterface {
         this.cenaProduktuBrutto = cenaProduktuNetto;
     }
 
-    public static void dodawanieProduktowDoFaktury(Faktura faktura){
+    public static void dodawanieProduktowDoFaktury(FakturaVat fakturaVat){
 
         Scanner scanner = new Scanner(System.in);
         boolean warunek = true;
@@ -67,13 +67,13 @@ public class Produkt implements DataBaseOperations,ProduktInterface {
                     ilosc_produktow = scanner.nextInt();
 //                    Produkt.getProoduktPoZadanymIndex(wybranyProdukt);
                     produkt =Produkt.getByIndexFromDataBase(wybranyProdukt);
-                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(fakturaVat,produkt,ilosc_produktow);
                     break;
                 case 2:
                     produkt = Produkt.dodanieNowegoProduktu();
                     System.out.print("Ilość: ");
                     ilosc_produktow = scanner.nextInt();
-                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(faktura,produkt,ilosc_produktow);
+                    produkt.dodanieProduktuDoTabeliWystawinychFaktur(fakturaVat,produkt,ilosc_produktow);
                     break;
                 case 3:
                     warunek = false;
@@ -156,15 +156,15 @@ public class Produkt implements DataBaseOperations,ProduktInterface {
     }
 
     @Override
-    public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt,int ilosc){
+    public void dodanieProduktuDoTabeliWystawinychFaktur(FakturaVat fakturaVat, Produkt produkt, int ilosc){
 
         //TODO CZY JA NIE POWINIEM TWEGO ROZDZILIC NA OSBNE FUNKCJE? JAK POWINNY WYGLADAC FUNKCJE OBSLUGUJCE CRUDY?
         //TODO CZY MOZAN ROZDZIELIC WYSTAPIENIE EXEPTIONA OD BREKAEPOINTA?
         try {
 
-            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
-            System.out.println(faktura.getNrFaktury());
-            System.out.println("SELECT * FROM faktury WHERE nr_faktury='"+ faktura.getNrFaktury()+"';");
+            ResultSet result = QueryExecutor.executeSelect("SELECT * FROM faktury WHERE nr_faktury='"+ fakturaVat.getNrFaktury()+"';");
+            System.out.println(fakturaVat.getNrFaktury());
+            System.out.println("SELECT * FROM faktury WHERE nr_faktury='"+ fakturaVat.getNrFaktury()+"';");
             result.next();
 
 
@@ -187,7 +187,7 @@ public class Produkt implements DataBaseOperations,ProduktInterface {
             try {
                 QueryExecutor.executeQuery("INSERT INTO wystawione_faktury VALUES (" + faktura_id + "," + produkt_id + "," + ilosc + ",0);");
             } catch (RuntimeException f) {
-                produkt.sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(produkt, faktura, ilosc);
+                produkt.sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(produkt, fakturaVat, ilosc);
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -196,11 +196,11 @@ public class Produkt implements DataBaseOperations,ProduktInterface {
     }
 
     @Override
-    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura,int ilosc){
+    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, FakturaVat fakturaVat, int ilosc){
         //todo gdzie przezucac logike wykonywania funkcji do programu czy do bazy SQL?
 
         int indexProduktuDoSprawdzenia = Produkt.getIndexProduktu(produkt);
-        int indexFakturyDoSprawdzenia = Faktura.getIndexFaktury(faktura);
+        int indexFakturyDoSprawdzenia = FakturaVat.getIndexFaktury(fakturaVat);
         System.out.println("SELECT * FROM wystawione_faktury WHERE faktura_id=" + indexFakturyDoSprawdzenia + " AND produkt_id=" + indexProduktuDoSprawdzenia + ";");
         ResultSet result = QueryExecutor.executeSelect("SELECT * FROM wystawione_faktury WHERE faktura_id=" + indexFakturyDoSprawdzenia + " AND produkt_id=" + indexProduktuDoSprawdzenia + ";");
         try {

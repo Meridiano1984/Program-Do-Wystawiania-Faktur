@@ -1,2 +1,3 @@
-public interface KontrachentInterface {
+public interface KontrachentInterface
+{
 }

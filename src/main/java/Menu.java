@@ -3,12 +3,12 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void wyswietlanieMenu(ArrayList<Faktura> listaFaktur){
+    public static void wyswietlanieMenu(ArrayList<FakturaVat> listaFaktur){
 
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println("                                        Program do wystawiania faktur               Całkowita lIczba faktur wynosi:" + Faktura.getLiczbaFaktur());
+        System.out.println("                                        Program do wystawiania faktur               Całkowita lIczba faktur wynosi:" + FakturaVat.getLiczbaFaktur());
         System.out.println("1.Wyswietl wszystkie faktury");
         System.out.println("2.Dodaj nowa Fakture");
         System.out.println("3.Wyswietl wszystkich kontrachentow z MYSQL");
@@ -20,17 +20,17 @@ public class Menu {
 
         switch (liczbaSterujaca){
             case 1:
-//                Faktura.wyswietlanieFaktur(listaFaktur);
-                Faktura.displayAllFromDataBase();
+//                FakturaVat.wyswietlanieFaktur(listaFaktur);
+                FakturaVat.displayAllFromDataBase();
 
                 break;
             case 2:
-//                Faktura.dodanieNowejFaktury(listaFaktur);
-                Faktura.dodawnaieNowejFaktury();
+//                FakturaVat.dodanieNowejFaktury(listaFaktur);
+                FakturaVat.dodawnaieNowejFaktury();
 
                 break;
             case 3:
-//                Faktura.wyswietlanieKonkretnejFaktury(listaFaktur);
+//                FakturaVat.wyswietlanieKonkretnejFaktury(listaFaktur);
                 Kontrachent.displayAllFromDataBase();
                 break;
             case 4:

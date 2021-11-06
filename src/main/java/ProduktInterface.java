@@ -1,6 +1,6 @@
 public interface ProduktInterface {
 
-    public void dodanieProduktuDoTabeliWystawinychFaktur(Faktura faktura,Produkt produkt,int ilosc);
+    public void dodanieProduktuDoTabeliWystawinychFaktur(FakturaVat fakturaVat, Produkt produkt, int ilosc);
 
-    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, Faktura faktura,int ilosc);
+    public void sprawdzenieCzyProduktZanjdujeSieJuzWBazieDanych(Produkt produkt, FakturaVat fakturaVat, int ilosc);
 }

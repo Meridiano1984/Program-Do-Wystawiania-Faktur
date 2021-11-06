@@ -17,8 +17,8 @@ public class Main {
 
         DatabaseInitialization databaseInitialization = new DatabaseInitialization();
 
-//        Faktura faktura =Faktura.getFakturaPoZadanymIndex(1);
-//        faktura.setCenaBruttoWFakturWystawionych(faktura);
+//        FakturaVat fakturaVat =FakturaVat.getFakturaPoZadanymIndex(1);
+//        fakturaVat.setCenaBruttoWFakturWystawionych(fakturaVat);
 
         //KOMENDA DO USOWANIA POPRZEDNIEJ BAZY DANYCH
         databaseInitialization.usuwanieTabel();
@@ -28,17 +28,17 @@ public class Main {
         databaseInitialization.dodaniePrzykładowychdanych();
 
         //USTWANIE CENN BRUTTO W WYSTAWIONYCH FAKTURACH
-        Faktura faktura =Faktura.getByIndexFromDataBase(1);
-        faktura.setCenaBruttoWFakturWystawionych(faktura);
-//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+        FakturaVat fakturaVat = FakturaVat.getByIndexFromDataBase(1);
+        fakturaVat.setCenaBruttoWFakturWystawionych(fakturaVat);
+//        fakturaVat.setCenaBruttoFakturyWBazieDanych(fakturaVat);
 
-        faktura =Faktura.getByIndexFromDataBase(2);
-        faktura.setCenaBruttoWFakturWystawionych(faktura);
-//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+        fakturaVat = FakturaVat.getByIndexFromDataBase(2);
+        fakturaVat.setCenaBruttoWFakturWystawionych(fakturaVat);
+//        fakturaVat.setCenaBruttoFakturyWBazieDanych(fakturaVat);
 
-        faktura =Faktura.getByIndexFromDataBase(3);
-        faktura.setCenaBruttoWFakturWystawionych(faktura);
-//        faktura.setCenaBruttoFakturyWBazieDanych(faktura);
+        fakturaVat = FakturaVat.getByIndexFromDataBase(3);
+        fakturaVat.setCenaBruttoWFakturWystawionych(fakturaVat);
+//        fakturaVat.setCenaBruttoFakturyWBazieDanych(fakturaVat);
 
 
 
@@ -63,15 +63,15 @@ public class Main {
         String  nabywca =  new String("Mirbux");
         int     cenaBrutto = 0;
 
-        ArrayList<Faktura> listaFaktur = new ArrayList<>(liczbaFakturDoWprowadzenia);
+        ArrayList<FakturaVat> listaFaktur = new ArrayList<>(liczbaFakturDoWprowadzenia);
         for(int i  =0; i< liczbaFakturDoWprowadzenia; i++) {
-            listaFaktur.add(new Faktura(dataWystawienia, listaKontrachentow.get(1)));
+            listaFaktur.add(new FakturaVat(dataWystawienia, listaKontrachentow.get(1)));
         }
 
 
         do{
             Menu.wyswietlanieMenu(listaFaktur);
-            Faktura.setLiczbaFaktur(listaFaktur.size());
+            FakturaVat.setLiczbaFaktur(listaFaktur.size());
         }while (true);
 
     }
